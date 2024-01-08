@@ -1,9 +1,16 @@
 import 'package:bucket_list_app/pages/bucket_list_page.dart';
 import 'package:bucket_list_app/pages/completed_page.dart';
 import 'package:bucket_list_app/pages/ideas_page.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  // Init Hive
+  await Hive.initFlutter();
+
+  // open a box
+  var box = await Hive.openBox('mybox');
+
   runApp(const MyApp());
 }
 
