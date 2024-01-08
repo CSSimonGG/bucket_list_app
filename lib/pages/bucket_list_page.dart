@@ -19,7 +19,8 @@ class _BucketListPageState extends State<BucketListPage> {
   @override
   void initState() {
     // If there are no to do items
-    if (_myBox.get("TODOLIST") == null) {
+    if (_myBox.get("BUCKETLIST") == null) {
+      // Empty
     } else {
       // Data exists
       db.loadData();
@@ -100,13 +101,22 @@ class _BucketListPageState extends State<BucketListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Bucket List"),
+        title: Text(
+            "My Bucket List",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         elevation: 0,
         backgroundColor: Colors.green[500],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: createNewTask,
-        child: Icon(Icons.add),
+        backgroundColor: Colors.green[400],
+        child: Icon(
+            Icons.add,
+          color: Colors.black,
+        ),
       ),
       body: db.bucketList.isEmpty
           ? const Center(
