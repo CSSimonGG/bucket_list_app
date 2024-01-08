@@ -33,9 +33,16 @@ class _BucketListPageState extends State<BucketListPage> {
   }
 
   // Checkbox was tapped
-  pressedCheck(int index) {
+  void pressedCheck(int index) {
     setState(() {
-      db.bucketList[index][1] = !db.bucketList[index][1];
+      bool completed = !db.bucketList[index][1];
+      db.bucketList[index][1] = completed;
+
+      // Move task to completed list
+      if (completed) {
+        db.completedList.add(db.bucketList[index][0]);
+        db.bucketList.removeAt(index);
+      }
     });
     db.updateDataBase();
   }
@@ -157,6 +164,7 @@ class _BucketListPageState extends State<BucketListPage> {
                         return BucketListTaskTile(
                           taskName: db.bucketList[index][0],
                           taskCompleted: db.bucketList[index][1],
+                          checkFunction: () => pressedCheck(index),
                           editFunction: (context) => editTask(index),
                           deleteFunction: (context) => deleteTask(index),
                         );
