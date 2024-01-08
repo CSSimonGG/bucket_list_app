@@ -16,6 +16,10 @@ class _BucketListPageState extends State<BucketListPage> {
   final _myBox = Hive.box('mybox');
   BucketListDataBase db = BucketListDataBase();
 
+  // Text controller
+  final _controller = TextEditingController();
+  String _searchQuery = ''; // Variable to store search query
+
   @override
   void initState() {
     // If there are no to do items
@@ -27,9 +31,6 @@ class _BucketListPageState extends State<BucketListPage> {
     }
     super.initState();
   }
-
-  // Text controller
-  final _controller = TextEditingController();
 
   // Checkbox was tapped
   pressedCheck(int index) {
@@ -102,7 +103,7 @@ class _BucketListPageState extends State<BucketListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            "My Bucket List",
+          "My Bucket List",
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -114,29 +115,60 @@ class _BucketListPageState extends State<BucketListPage> {
         onPressed: createNewTask,
         backgroundColor: Colors.green[400],
         child: Icon(
-            Icons.add,
+          Icons.add,
           color: Colors.black,
         ),
       ),
-      body: db.bucketList.isEmpty
-          ? const Center(
-              // Display message when bucket list is empty
-              child: Text(
-                "No Bucket List Items",
-                style: TextStyle(fontSize: 18),
-              ),
-            )
-          : ListView.builder(
-              itemCount: db.bucketList.length,
-              itemBuilder: (context, index) {
-                return BucketListTaskTile(
-                  taskName: db.bucketList[index][0],
-                  taskCompleted: db.bucketList[index][1],
-                  editFunction: (context) => editTask(index),
-                  deleteFunction: (context) => deleteTask(index),
-                );
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: TextField(
+              controller: _controller,
+              onChanged: (query) {
+                // Update the search query as the user types
+                setState(() {
+                  _searchQuery = query;
+                });
               },
+              decoration: InputDecoration(
+                hintText: 'Search...',
+                border: OutlineInputBorder(),
+              ),
             ),
+          ),
+          Expanded(
+            child: db.bucketList.isEmpty
+                ? const Center(
+                    child: Text(
+                      "No Bucket List Items",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: db.bucketList.length,
+                    itemBuilder: (context, index) {
+                      // Apply filtering based on the search query
+                      if (_searchQuery.isEmpty ||
+                          db.bucketList[index][0]
+                              .toLowerCase()
+                              .contains(_searchQuery.toLowerCase())) {
+                        return BucketListTaskTile(
+                          taskName: db.bucketList[index][0],
+                          taskCompleted: db.bucketList[index][1],
+                          editFunction: (context) => editTask(index),
+                          deleteFunction: (context) => deleteTask(index),
+                        );
+                      } else {
+                        return SizedBox
+                            .shrink(); // Hidden if not matching the search
+                      }
+                    },
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }
