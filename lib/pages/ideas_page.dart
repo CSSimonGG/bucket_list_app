@@ -12,7 +12,12 @@ class _IdeasPageState extends State<IdeasPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Bucket List Ideas"),
+        title: Text(
+            "Bucket List Ideas",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         elevation: 0,
         backgroundColor: Colors.green[500],
       ),

@@ -12,7 +12,12 @@ class _CompletedPageState extends State<CompletedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Completed"),
+        title: Text(
+            "Completed",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         elevation: 0,
         backgroundColor: Colors.green[500],
       ),

@@ -21,7 +21,7 @@ class BucketListTaskTile extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.green[400],
+          color: Colors.green[300],
           borderRadius: BorderRadius.circular(12)
         ),
         child: Row(
