@@ -4,7 +4,6 @@ import 'package:bucket_list_app/data/database.dart';
 import 'package:bucket_list_app/util/dialog_box.dart';
 import 'package:bucket_list_app/util/bucket_list_task_tile.dart';
 
-
 class BucketListPage extends StatefulWidget {
   const BucketListPage({super.key});
 
@@ -19,7 +18,12 @@ class _BucketListPageState extends State<BucketListPage> {
 
   @override
   void initState() {
-    db.loadData();
+    // If there are no to do items
+    if (_myBox.get("TODOLIST") == null) {
+    } else {
+      // Data exists
+      db.loadData();
+    }
     super.initState();
   }
 
@@ -104,17 +108,25 @@ class _BucketListPageState extends State<BucketListPage> {
         onPressed: createNewTask,
         child: Icon(Icons.add),
       ),
-      body: ListView.builder(
-        itemCount: db.bucketList.length,
-        itemBuilder: (context, index) {
-          return BucketListTaskTile(
-            taskName: db.bucketList[index][0],
-            taskCompleted: db.bucketList[index][1],
-            editFunction: (context) => editTask(index),
-            deleteFunction: (context) => deleteTask(index),
-          );
-        },
-      ),
+      body: db.bucketList.isEmpty
+          ? const Center(
+              // Display message when bucket list is empty
+              child: Text(
+                "No Bucket List Items",
+                style: TextStyle(fontSize: 18),
+              ),
+            )
+          : ListView.builder(
+              itemCount: db.bucketList.length,
+              itemBuilder: (context, index) {
+                return BucketListTaskTile(
+                  taskName: db.bucketList[index][0],
+                  taskCompleted: db.bucketList[index][1],
+                  editFunction: (context) => editTask(index),
+                  deleteFunction: (context) => deleteTask(index),
+                );
+              },
+            ),
     );
   }
 }
