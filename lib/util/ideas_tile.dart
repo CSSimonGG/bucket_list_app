@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class CompletedTile extends StatelessWidget {
+class IdeasTile extends StatelessWidget {
   final String itemName;
-  Function(BuildContext)? deleteFunction;
+  Function()? addFunction;
 
-  CompletedTile({
+  IdeasTile({
     super.key,
     required this.itemName,
-    required this.deleteFunction,
+    required this.addFunction,
   });
 
   @override
@@ -17,28 +17,23 @@ class CompletedTile extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
-            color: Colors.green[400], borderRadius: BorderRadius.circular(12)),
+          color: Colors.green[300],
+          borderRadius: BorderRadius.circular(12)
+        ),
         child: Row(
           children: [
+            IconButton(
+              onPressed: addFunction,
+              icon: Icon(Icons.add),
+            ),
+
             // Bucket list item name
             Container(
-              width: 250,
+              width: 175,
               child: Text(
                 itemName,
                 overflow: TextOverflow.fade,
               ),
-            ),
-
-            Spacer(),
-
-            // Delete icon
-            IconButton(
-              onPressed: () {
-                if (deleteFunction != null) {
-                  deleteFunction!(context);
-                }
-              },
-              icon: Icon(Icons.delete),
             ),
           ],
         ),

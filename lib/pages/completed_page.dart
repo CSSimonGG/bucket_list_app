@@ -18,7 +18,7 @@ class _CompletedPageState extends State<CompletedPage> {
   @override
   void initState() {
     super.initState();
-    db.loadData(); // Load completed list when the CompletedPage is created
+    db.loadData();
   }
 
   // Delete task
@@ -53,7 +53,7 @@ class _CompletedPageState extends State<CompletedPage> {
               itemCount: db.completedList.length,
               itemBuilder: (context, index) {
                 return CompletedTile(
-                  taskName: db.completedList[index],
+                  itemName: db.completedList[index],
                   deleteFunction: (context) => deleteTask(index),
                 );
               },

@@ -18,13 +18,14 @@ class _BucketListPageState extends State<BucketListPage> {
 
   // Text controller
   final _controller = TextEditingController();
+  final _searchController = TextEditingController();
   String _searchQuery = ''; // Variable to store search query
 
   @override
   void initState() {
     // If there are no to do items
     if (_myBox.get("BUCKETLIST") == null) {
-      // Empty
+      db.updateDataBase();
     } else {
       // Data exists
       db.loadData();
@@ -35,22 +36,18 @@ class _BucketListPageState extends State<BucketListPage> {
   // Checkbox was tapped
   void pressedCheck(int index) {
     setState(() {
-      bool completed = !db.bucketList[index][1];
-      db.bucketList[index][1] = completed;
-
-      // Move task to completed list
-      if (completed) {
-        db.completedList.add(db.bucketList[index][0]);
-        db.bucketList.removeAt(index);
-      }
+      // Move item from bucket list to completed list
+      db.completedList.add(db.bucketList[index]);
+      db.bucketList.removeAt(index);
     });
     db.updateDataBase();
   }
 
   // Save new task
   void saveNewTask() {
+    String bucketListItem = _controller.text.toString();
     setState(() {
-      db.bucketList.add([_controller.text, false]);
+      db.bucketList.add(bucketListItem);
       _controller.clear();
     });
     Navigator.of(context).pop();
@@ -74,7 +71,8 @@ class _BucketListPageState extends State<BucketListPage> {
   // Save edited task
   void saveEditedTask(int index) {
     setState(() {
-      db.bucketList[index] = [_controller.text, false];
+      String bucketListItem = _controller.text.toString();
+      db.bucketList[index] = bucketListItem;
       _controller.clear();
     });
     Navigator.of(context).pop();
@@ -132,7 +130,7 @@ class _BucketListPageState extends State<BucketListPage> {
           Padding(
             padding: const EdgeInsets.all(25.0),
             child: TextField(
-              controller: _controller,
+              controller: _searchController,
               onChanged: (query) {
                 // Update the search query as the user types
                 setState(() {
@@ -158,12 +156,11 @@ class _BucketListPageState extends State<BucketListPage> {
                     itemBuilder: (context, index) {
                       // Apply filtering based on the search query
                       if (_searchQuery.isEmpty ||
-                          db.bucketList[index][0]
+                          db.bucketList[index]
                               .toLowerCase()
                               .contains(_searchQuery.toLowerCase())) {
                         return BucketListTaskTile(
-                          taskName: db.bucketList[index][0],
-                          taskCompleted: db.bucketList[index][1],
+                          itemName: db.bucketList[index],
                           checkFunction: () => pressedCheck(index),
                           editFunction: (context) => editTask(index),
                           deleteFunction: (context) => deleteTask(index),

@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 
 class BucketListTaskTile extends StatelessWidget {
-  final String taskName;
-  final bool taskCompleted;
+  final String itemName;
   Function()? checkFunction;
   Function(BuildContext)? editFunction;
   Function(BuildContext)? deleteFunction;
 
   BucketListTaskTile({
     super.key,
-    required this.taskName,
-    required this.taskCompleted,
+    required this.itemName,
     required this.checkFunction,
     required this.editFunction,
     required this.deleteFunction,
@@ -23,9 +21,7 @@ class BucketListTaskTile extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.green[300],
-          borderRadius: BorderRadius.circular(12)
-        ),
+            color: Colors.green[300], borderRadius: BorderRadius.circular(12)),
         child: Row(
           children: [
             IconButton(
@@ -33,12 +29,18 @@ class BucketListTaskTile extends StatelessWidget {
               icon: Icon(Icons.check),
             ),
 
-            // task name
-            Text(taskName),
+            // Bucket list item name
+            Container(
+              width: 175,
+              child: Text(
+                itemName,
+                overflow: TextOverflow.fade,
+              ),
+            ),
 
             Spacer(),
 
-            // Edit icon
+            // Edit button
             IconButton(
               onPressed: () {
                 if (editFunction != null) {
@@ -48,7 +50,7 @@ class BucketListTaskTile extends StatelessWidget {
               icon: Icon(Icons.edit),
             ),
 
-            // Delete icon
+            // Delete button
             IconButton(
               onPressed: () {
                 if (deleteFunction != null) {
