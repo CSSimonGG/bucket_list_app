@@ -31,10 +31,12 @@ class BucketListTaskTile extends StatelessWidget {
 
             // Bucket list item name
             Container(
-              width: 175,
-              child: Text(
-                itemName,
-                overflow: TextOverflow.fade,
+              child: Expanded(
+                flex: 7,
+                child: Text(
+                  itemName,
+                  overflow: TextOverflow.fade,
+                ),
               ),
             ),
 

@@ -22,10 +22,12 @@ class CompletedTile extends StatelessWidget {
           children: [
             // Bucket list item name
             Container(
-              width: 250,
-              child: Text(
-                itemName,
-                overflow: TextOverflow.fade,
+              child: Expanded(
+                flex: 7,
+                child: Text(
+                  itemName,
+                  overflow: TextOverflow.fade,
+                ),
               ),
             ),
 
